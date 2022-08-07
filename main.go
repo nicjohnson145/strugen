@@ -46,7 +46,10 @@ func HasTagValue(tagValues string, query string) bool {
 
 func run(opts strugenOpts, templateFile string) {
 	// Parse the user supplied template
-	tmpl, err := template.New(path.Base(templateFile)).Funcs(template.FuncMap{"HasTagValue": HasTagValue}).ParseFiles(templateFile)
+	funcs := template.FuncMap{
+		"HasTagValue": HasTagValue,
+	}
+	tmpl, err := template.New(path.Base(templateFile)).Funcs(funcs).ParseFiles(templateFile)
 	if err != nil {
 		log.Fatalf("error parsing template: %v", err)
 	}
