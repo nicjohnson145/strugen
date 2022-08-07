@@ -18,7 +18,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/nicjohnson145/strugen"
 	"fmt"
-    "encoding/json"
+	"encoding/json"
 )
 
 func main() {
