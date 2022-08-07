@@ -1,4 +1,4 @@
-package strugen
+package strugenlib
 
 import (
 	"bytes"
