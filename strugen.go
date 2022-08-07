@@ -29,6 +29,7 @@ type StructField struct {
 	Exported string
 	Tagged   bool
 	TagValue string
+	Type     string
 }
 
 func (g *Generator) FindStructs() (map[string]Struct, error) {
@@ -100,6 +101,8 @@ func (g *Generator) parseStruct(file *ast.File, fileSet *token.FileSet) (map[str
 				inspectError = fmt.Errorf("error printing type name: %v", err)
 				return false
 			}
+
+			sf.Type = typeNameBuf.String()
 
 			if field.Tag != nil {
 				tag := field.Tag.Value
