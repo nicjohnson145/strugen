@@ -45,7 +45,7 @@ func run(types []string) {
 	}
 	structs, err := gen.FindStructs()
 	if err != nil {
-        panic(err)
+		panic(err)
 	}
 
 	bytes, err := json.MarshalIndent(structs, "", "   ")
