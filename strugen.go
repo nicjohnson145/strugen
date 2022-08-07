@@ -32,18 +32,18 @@ type StructField struct {
 	Type     string
 }
 
-func (g *Generator) FindStructs() (map[string]Struct, error) {
+func (g *Generator) FindStructs() (map[string]Struct, string, error) {
 	cfg := &packages.Config{
 		Mode:  packages.LoadSyntax,
 		Tests: false,
 	}
 	pkgs, err := packages.Load(cfg, ".")
 	if err != nil {
-		return map[string]Struct{}, fmt.Errorf("error loading package: %v", err)
+		return map[string]Struct{}, "", fmt.Errorf("error loading package: %v", err)
 	}
 
 	if len(pkgs) != 1 {
-		return map[string]Struct{}, fmt.Errorf("error: %d packages found, expected 1", len(pkgs))
+		return map[string]Struct{}, "", fmt.Errorf("error: %d packages found, expected 1", len(pkgs))
 	}
 
 	structs := map[string]Struct{}
@@ -51,13 +51,13 @@ func (g *Generator) FindStructs() (map[string]Struct, error) {
 	for _, f := range pkgs[0].Syntax {
 		smap, err := g.parseStruct(f, pkgs[0].Fset)
 		if err != nil {
-			return map[string]Struct{}, err
+			return map[string]Struct{}, "", err
 		}
 
 		structs = lo.Assign(structs, smap)
 	}
 
-	return structs, nil
+	return structs, pkgs[0].Name, nil
 }
 
 func (g *Generator) parseStruct(file *ast.File, fileSet *token.FileSet) (map[string]Struct, error) {
