@@ -80,8 +80,14 @@ func (g *Generator) parseStruct(file *ast.File, fileSet *token.FileSet) (map[str
 			return true
 		}
 
+		structName := typeSpec.Name.Name
+
+		if !lo.Contains(g.Types, structName) {
+			return false
+		}
+
 		struct_ := Struct{
-			Name: typeSpec.Name.Name,
+			Name: structName,
 			Fields: map[string]StructField{},
 		}
 		for _, field := range s.Fields.List {
